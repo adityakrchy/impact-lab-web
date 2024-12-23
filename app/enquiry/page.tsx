@@ -12,19 +12,19 @@ const EnquiryPage = () => {
     {
       icon: <MapPin className="w-12 h-12" />,
       title: "Our Location",
-      description: "123 Impact Street, Innovation City, Tech State 12345",
+      description: "P.M. Tank, Bangalitola, Laheriasarai, Darbhanga, Bihar, 846001",
       color: "from-blue-500 to-cyan-400"
     },
     {
       icon: <Phone className="w-12 h-12" />,
       title: "Phone Number",
-      description: "+1 (555) 123-4567",
+      description: "+91 9931467100",
       color: "from-purple-500 to-pink-400"
     },
     {
       icon: <Mail className="w-12 h-12" />,
       title: "Email Address",
-      description: "contact@impactlab.com",
+      description: "info@impactlab.in",
       color: "from-green-500 to-emerald-400"
     },
     {
