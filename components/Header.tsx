@@ -4,6 +4,12 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { Montserrat } from 'next/font/google'
+
+const montserrat = Montserrat({ 
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '900'],
+})
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -17,20 +23,25 @@ const Header = () => {
           className="flex items-center"
         >
           <Link href="/" className="flex items-center group">
-            <div className="relative w-14 h-14 mr-3 overflow-hidden rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105">
+            <div className="relative w-14 h-14 mr-3 overflow-hidden rounded-lg">
               <Image 
-                src="/assets/logo.jpg" 
+                src="/assets/logo1.png" 
                 alt="impact-lab-logo" 
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-110" 
+                className="object-cover " 
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                IMPACT LAB
+              <span className={`${montserrat.className} text-2xl tracking-wider font-black 
+                bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 
+                bg-clip-text text-transparent 
+                drop-shadow-sm
+                transform transition-transform duration-300 group-hover:scale-105`}
+              >
+                IMPACT•LAB
               </span>
-              <span className="text-sm text-gray-500 font-medium tracking-wider">
+              <span className={`${montserrat.className} text-xs tracking-[0.2em] text-gray-500 font-medium`}>
                 EMPOWERING FUTURES
               </span>
             </div>
@@ -71,7 +82,7 @@ const Header = () => {
               shadow-md hover:shadow-lg transition-all duration-300
               hover:from-blue-700 hover:to-blue-800"
           >
-            Enroll Now
+          Enroll Now
           </motion.button>
         </Link>
 
@@ -114,9 +125,9 @@ const Header = () => {
                 shadow-md hover:shadow-lg transition-all duration-300
                 hover:from-blue-700 hover:to-blue-800"
             >
-              Enroll Now
-            </Link>
-          </div>
+            Enroll Now
+          </Link>
+        </div>
         </motion.div>
       )}
     </header>

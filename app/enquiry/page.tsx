@@ -1,164 +1,151 @@
 "use client"
-import React from 'react';
-import { Button } from '@/components/ui/button'; // Ensure these components are correctly imported
-import { Input } from '@/components/ui/input'; // Ensure these components are correctly imported
-import { Textarea } from '@/components/ui/textarea'; // Ensure these components are correctly imported
-import { MapPin, Phone, Mail } from 'lucide-react'; // Example icon imports (replace with actual icons)
+import { MapPin, Phone, Mail, MessageSquare, Clock, Users } from 'lucide-react'
+import { motion } from 'framer-motion'
+import PageWrapper from '@/components/layout/PageWrapper'
+import Section from '@/components/layout/Section'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
-const page = () => {
-    // const [formData, setFormData] = useState({
-    //     name: '',
-    //     email: '',
-    //     subject: '',
-    //     message: '',
-    // });
-    // // @typescript-eslint/no-explicit-any
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    // };
-    // // @typescript-eslint/no-explicit-any
-    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     // Handle form submission logic here
-    // };
+const EnquiryPage = () => {
+  const contactInfo = [
+    {
+      icon: <MapPin className="w-12 h-12" />,
+      title: "Our Location",
+      description: "123 Impact Street, Innovation City, Tech State 12345",
+      color: "from-blue-500 to-cyan-400"
+    },
+    {
+      icon: <Phone className="w-12 h-12" />,
+      title: "Phone Number",
+      description: "+1 (555) 123-4567",
+      color: "from-purple-500 to-pink-400"
+    },
+    {
+      icon: <Mail className="w-12 h-12" />,
+      title: "Email Address",
+      description: "contact@impactlab.com",
+      color: "from-green-500 to-emerald-400"
+    },
+    {
+      icon: <MessageSquare className="w-12 h-12" />,
+      title: "Live Chat",
+      description: "Chat with our support team",
+      color: "from-orange-500 to-amber-400"
+    },
+    {
+      icon: <Clock className="w-12 h-12" />,
+      title: "Business Hours",
+      description: "Monday - Saturday: 9:00 AM - 6:00 PM",
+      color: "from-rose-500 to-pink-400"
+    },
+    {
+      icon: <Users className="w-12 h-12" />,
+      title: "Support Team",
+      description: "Dedicated support for all your queries",
+      color: "from-indigo-500 to-blue-400"
+    }
+  ]
 
-    return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-                <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-8">
-                    Get in Touch with Us
-                </h1>
-                <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
-                    We&apos;d love to hear from you!
-                </h3>
-                <p className="text-lg text-gray-600 text-center mb-12">
-                    Whether you have questions, feedback, or need assistance, we&apos;re here to help.
-                    Reach out to us through the form below, and our team will get back to you as soon
-                    as possible. Your thoughts and inquiries are important to us, and we&apos;re committed
-                    to providing the best support possible.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Contact Form */}
-                    <div className="bg-white shadow-md rounded-lg p-6 space-y-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
-                        <form className="space-y-6">
-                            <div>
-                                <label
-                                    htmlFor="name"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Name
-                                </label>
-                                <Input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    // value={formData.name}
-                                    // onChange={handleChange}
-                                    required
-                                    className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Email
-                                </label>
-                                <Input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    // value={formData.email}
-                                    // onChange={handleChange}
-                                    required
-                                    className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="subject"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Subject
-                                </label>
-                                <Input
-                                    type="text"
-                                    id="subject"
-                                    name="subject"
-                                    // value={formData.subject}
-                                    // onChange={handleChange}
-                                    required
-                                    className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="message"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Message
-                                </label>
-                                <Textarea
-                                    id="message"
-                                    name="message"
-                                    rows={4}
-                                    // value={formData.message}
-                                    // onChange={handleChange}
-                                    required
-                                    className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                />
-                            </div>
-                            <Button
-                                type="submit"
-                                className="w-full py-3 px-6 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none"
-                            >
-                                Send Message
-                            </Button>
-                        </form>
-                    </div>
-
-                    {/* Map and Contact Info */}
-                    <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                        <div className="h-64 bg-gray-300">
-                            {/* Replace the src URL with your actual Google Maps embed URL */}
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.1661840581!2d88.36869661495453!3d22.572736785181472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0277a67e2d9bef%3A0x2a4a6e0134744c81!2sImpact%20Lab!5e0!3m2!1sen!2sin!4v1625671681977!5m2!1sen!2sin"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                            ></iframe>
-                        </div>
-                        <div className="p-6 space-y-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
-                            <div className="space-y-4">
-                                <div className="flex items-center">
-                                    <MapPin className="w-6 h-6 text-gray-600 mr-3 mt-1" />
-                                    <p className="text-gray-700">123 Impact Street, Innovation City, Tech State 12345</p>
-                                </div>
-                                <div className="flex items-center">
-                                    <Phone className="w-6 h-6 text-gray-600 mr-3" />
-                                    <p className="text-gray-700">+1 (555) 123-4567</p>
-                                </div>
-                                <div className="flex items-center">
-                                    <Mail className="w-6 h-6 text-gray-600 mr-3" />
-                                    <p className="text-gray-700">contact@impactlab.com</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <PageWrapper>
+      <Section
+        title="Get in Touch with Us"
+        subtitle="We'd love to hear from you! Whether you have questions, feedback, or need assistance, we're here to help."
+      >
+        {/* Contact Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+        >
+          {contactInfo.map((info, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="relative group"
+            >
+              <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-10 rounded-xl transition-opacity duration-300`} />
+                <div className={`w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-gradient-to-br ${info.color} text-white`}>
+                  {info.icon}
                 </div>
-            </div>
-        </div>
-    );
-};
+                <h3 className="text-xl font-bold mb-3 text-center text-gray-800">{info.title}</h3>
+                <p className="text-gray-600 text-center">{info.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-export default page;
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-xl p-8 shadow-lg"
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Send us a message</h2>
+            <form className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <Input type="text" id="name" name="name" required />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <Input type="email" id="email" name="email" required />
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject
+                </label>
+                <Input type="text" id="subject" name="subject" required />
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <Textarea id="message" name="message" rows={4} required />
+              </div>
+              <Button 
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+              >
+                Send Message
+              </Button>
+            </form>
+          </motion.div>
+
+          {/* Map */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-xl shadow-lg overflow-hidden"
+          >
+            <div className="h-full min-h-[400px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.1661840581!2d88.36869661495453!3d22.572736785181472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0277a67e2d9bef%3A0x2a4a6e0134744c81!2sImpact%20Lab!5e0!3m2!1sen!2sin!4v1625671681977!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+              ></iframe>
+            </div>
+          </motion.div>
+        </div>
+      </Section>
+    </PageWrapper>
+  )
+}
+
+export default EnquiryPage
