@@ -2,46 +2,122 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white shadow-lg border">
-      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">
-          Impact Lab
-        </Link>
-        <div className="hidden md:flex space-x-4">
-          <Link href="/about" className="text-gray-600 hover:text-blue-600">About Us</Link>
-          <Link href="/courses" className="text-gray-600 hover:text-blue-600">Courses</Link>
-          <Link href="/eligibility-and-benefits" className="text-gray-600 hover:text-blue-600">Eligibility & Benefits</Link>
-          <Link href="/gallary" className="text-gray-600 hover:text-blue-600">Gallary</Link>
-          <Link href="/career" className="text-gray-600 hover:text-blue-600">Career</Link>
-          <Link href="/enquiry" className="text-gray-600 hover:text-blue-600">Enquiry</Link>
-          
+    <header className="bg-white shadow-lg border-b border-gray-100">
+      <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center"
+        >
+          <Link href="/" className="flex items-center group">
+            <div className="relative w-14 h-14 mr-3 overflow-hidden rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105">
+              <Image 
+                src="/assets/logo.jpg" 
+                alt="impact-lab-logo" 
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                IMPACT LAB
+              </span>
+              <span className="text-sm text-gray-500 font-medium tracking-wider">
+                EMPOWERING FUTURES
+              </span>
+            </div>
+          </Link>
+        </motion.div>
+
+        <div className="hidden md:flex space-x-6 items-center">
+          {[
+            { href: "/about", label: "About Us" },
+            { href: "/courses", label: "Courses" },
+            { href: "/eligibility-and-benefits", label: "Eligibility & Benefits" },
+            { href: "/gallary", label: "Gallery" },
+            { href: "/career", label: "Career" },
+            { href: "/enquiry", label: "Enquiry" },
+          ].map((link) => (
+            <Link 
+              key={link.href}
+              href={link.href} 
+              className="text-gray-600 hover:text-blue-600 font-semibold text-sm uppercase tracking-wide
+                relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+                after:w-0 hover:after:w-full after:bg-blue-600 
+                after:transition-all after:duration-300"
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
-        <Link href="/enroll" className="hidden md:block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Enroll Now
+
+        <Link 
+          href="/enroll" 
+          className="hidden md:block"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white 
+              px-6 py-2 rounded-lg font-semibold text-sm uppercase tracking-wider
+              shadow-md hover:shadow-lg transition-all duration-300
+              hover:from-blue-700 hover:to-blue-800"
+          >
+            Enroll Now
+          </motion.button>
         </Link>
-        <button 
-          className="md:hidden"
+
+        <button
+          className="md:hidden text-gray-600 hover:text-blue-600 transition-colors duration-200"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {isMenuOpen ? <X /> : <Menu />}
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
+
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white py-2">
-          <Link href="/about" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">About Us</Link>
-          <Link href="/courses" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Courses</Link>
-          <Link href="/eligibility" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Eligibility & Benefits</Link>
-          <Link href="/register" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Register</Link>
-          <Link href="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Contact</Link>
-          <Link href="/register" className="block px-4 py-2 bg-blue-600 text-white text-center mt-2 mx-4 rounded hover:bg-blue-700">
-            Enroll Now
-          </Link>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden bg-white border-t border-gray-100 py-2"
+        >
+          {[
+            { href: "/about", label: "About Us" },
+            { href: "/courses", label: "Courses" },
+            { href: "/eligibility-and-benefits", label: "Eligibility & Benefits" },
+            { href: "/gallary", label: "Gallery" },
+            { href: "/career", label: "Career" },
+            { href: "/enquiry", label: "Enquiry" },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="block px-4 py-2 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="px-4 py-2">
+            <Link 
+              href="/enroll"
+              className="block bg-gradient-to-r from-blue-600 to-blue-700 text-white 
+                px-4 py-2 rounded-lg font-semibold text-sm text-center
+                shadow-md hover:shadow-lg transition-all duration-300
+                hover:from-blue-700 hover:to-blue-800"
+            >
+              Enroll Now
+            </Link>
+          </div>
+        </motion.div>
       )}
     </header>
   )

@@ -1,0 +1,40 @@
+ .carousel-container {
+    position: relative;
+    margin-bottom: 40px; /* Space for thumbnails */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.carousel .thumbs-wrapper {
+    margin: 20px 0;
+    padding: 10px 0;
+}
+
+.carousel .thumb {
+    border: 3px solid transparent;
+    border-radius: 4px;
+    margin: 0 4px;
+    padding: 2px;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.carousel .thumb.selected {
+    border-color: #3b82f6; /* Bright blue border */
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5); /* Blue glow */
+    opacity: 1;
+}
+
+.carousel .thumb:hover {
+    border-color: #60a5fa;
+    opacity: 0.9;
+}
+
+.carousel .thumb img {
+    border-radius: 2px;
+    height: 100%;
+    object-fit: cover;
+} 
