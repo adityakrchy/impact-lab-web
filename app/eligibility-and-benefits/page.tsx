@@ -64,7 +64,6 @@ export default function EligibilityAndBenefits() {
               "Age: 15-33 years (OBC/SC/ST Categories)",
               "Educational Qualification: 10th pass or equivalent",
               "Domicile: Resident of Bihar",
-              "Income: Annual family income not exceeding ₹1,50,000"
             ].map((criteria, index) => (
               <motion.div
                 key={index}

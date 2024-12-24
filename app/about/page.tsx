@@ -34,7 +34,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <PageWrapper>
+    <PageWrapper className='mx-auto max-w-7xl'>
       <Section
         title="About Impact Lab"
         subtitle="Learn more about our mission and values"

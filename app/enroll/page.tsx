@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { 
   User, Mail, Phone, GraduationCap, Users, FileText, 
   MapPin, Calendar, Book, Building, Home, 
-  Clock, Wallet
 } from 'lucide-react'
 import PageWrapper from '@/components/layout/PageWrapper'
 import Section from '@/components/layout/Section'
@@ -19,16 +18,14 @@ type FormData = {
   // Personal Information
   name: string
   dateOfBirth: string
-  age: number
   gender: string
   email: string
   phone: string
-  alternatePhone: string
   
   // Address Information
-  address: string
+  addressLine1: string
+  addressLine2: string
   city: string
-  state: string
   pincode: string
 
   // Educational Background
@@ -37,13 +34,6 @@ type FormData = {
   yearOfPassing: string
   percentage: string
   
-  // Course Preferences
-  preferredCourse: string
-  preferredBatch: string
-  
-  // Additional Information
-  category: string
-  familyIncome: string
   document: FileList
   declaration: boolean
 }
@@ -116,7 +106,7 @@ export default function EnrollPage() {
       },
       {
         name: "phone",
-        label: "Primary Phone Number",
+        label: "Phone Number",
         type: "tel",
         icon: <Phone className="w-5 h-5 text-gray-500" />,
         placeholder: "Enter your phone number",
@@ -124,23 +114,23 @@ export default function EnrollPage() {
           required: 'Phone number is required',
           pattern: { value: /^[0-9]{10}$/, message: 'Invalid phone number' }
         }
-      },
-      {
-        name: "alternatePhone",
-        label: "Alternate Phone Number (Optional)",
-        type: "tel",
-        icon: <Phone className="w-5 h-5 text-gray-500" />,
-        placeholder: "Enter alternate phone number",
       }
     ],
     address: [
       {
-        name: "address",
-        label: "Complete Address",
-        type: "textarea",
+        name: "addressLine1",
+        label: "Address Line 1",
+        type: "text",
         icon: <Home className="w-5 h-5 text-gray-500" />,
-        placeholder: "Enter your complete address",
+        placeholder: "Enter your street address",
         validation: { required: 'Address is required' }
+      },
+      {
+        name: "addressLine2",
+        label: "Address Line 2",
+        type: "text",
+        icon: <Home className="w-5 h-5 text-gray-500" />,
+        placeholder: "Enter apartment, suite, etc. (optional)"
       },
       {
         name: "city",
@@ -149,14 +139,6 @@ export default function EnrollPage() {
         icon: <Building className="w-5 h-5 text-gray-500" />,
         placeholder: "Enter your city",
         validation: { required: 'City is required' }
-      },
-      {
-        name: "state",
-        label: "State",
-        type: "text",
-        icon: <MapPin className="w-5 h-5 text-gray-500" />,
-        placeholder: "Enter your state",
-        validation: { required: 'State is required' }
       },
       {
         name: "pincode",
@@ -202,53 +184,6 @@ export default function EnrollPage() {
         icon: <Book className="w-5 h-5 text-gray-500" />,
         placeholder: "Enter percentage or CGPA",
         validation: { required: 'Percentage/CGPA is required' }
-      }
-    ],
-    course: [
-      {
-        name: "preferredCourse",
-        label: "Preferred Course",
-        type: "select",
-        icon: <Book className="w-5 h-5 text-gray-500" />,
-        options: [
-          "Select course",
-          "BS-CIT (IT Skills)",
-          "BS-CLS (Language Skills)",
-          "BS-CSS (Soft Skills)",
-          "BS-CFA (Financial Accounting)"
-        ],
-        validation: { required: 'Course selection is required' }
-      },
-      {
-        name: "preferredBatch",
-        label: "Preferred Batch Timing",
-        type: "select",
-        icon: <Clock className="w-5 h-5 text-gray-500" />,
-        options: [
-          "Select batch timing",
-          "Morning (9 AM - 12 PM)",
-          "Afternoon (2 PM - 5 PM)",
-          "Evening (6 PM - 9 PM)"
-        ],
-        validation: { required: 'Batch timing is required' }
-      }
-    ],
-    additional: [
-      {
-        name: "familyIncome",
-        label: "Annual Family Income",
-        type: "text",
-        icon: <Wallet className="w-5 h-5 text-gray-500" />,
-        placeholder: "Enter annual family income",
-        validation: { required: 'Family income is required' }
-      },
-      {
-        name: "category",
-        label: "Category",
-        type: "select",
-        icon: <Users className="w-5 h-5 text-gray-500" />,
-        options: ["Select category", "General", "OBC", "SC", "ST"],
-        validation: { required: 'Category is required' }
       }
     ]
   }
@@ -296,32 +231,17 @@ export default function EnrollPage() {
                 </div>
               </div>
 
-              {/* Course Preferences */}
+              {/* Document Upload Section */}
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">Course Preferences</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {sections.course.map((field, index) => (
-                    <RenderFormField key={field.name} field={field} register={register} errors={errors} index={index} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Additional Information */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">Additional Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {sections.additional.map((field, index) => (
-                    <RenderFormField key={field.name} field={field} register={register} errors={errors} index={index} />
-                  ))}
-                  
+                <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">Upload Documents</h3>
+                <div className="grid grid-cols-1 gap-6">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
-                    className="col-span-2"
                   >
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Upload Documents (PDF only)
+                      Upload Required Documents (PDF only)
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -337,6 +257,9 @@ export default function EnrollPage() {
                     {errors.document && (
                       <p className="mt-1 text-sm text-red-500">{errors.document.message}</p>
                     )}
+                    <p className="mt-2 text-sm text-gray-500">
+                      Please upload scanned copies of your educational certificates and ID proof in a single PDF file.
+                    </p>
                   </motion.div>
                 </div>
               </div>
