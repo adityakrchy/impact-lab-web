@@ -3,6 +3,16 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
+  // {
+  //   url: "/assets/img1.jpg",
+  //   title: "Transform Your Future",
+  //   subtitle: "With Impact Lab's Professional Courses"
+  // },
+  // {
+  //   url: "/assets/img2.jpg",
+  //   title: "Transform Your Future",
+  //   subtitle: "With Impact Lab's Professional Courses"
+  // },
   {
     url: "/assets/banner1.jpg",
     title: "Transform Your Future",
@@ -80,11 +90,14 @@ export default function CustomCarousel() {
     return () => clearInterval(slideInterval);
   }, [currentIndex]);
 
+
+  
+
   return (
     <div className="relative w-full group">
       {/* Dynamic height based on screen size */}
-      <div 
-        className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] w-full relative overflow-hidden"
+      <div
+        className="h-[100px] sm:h-[300px] md:h-[500px] object-cover relative overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -108,18 +121,17 @@ export default function CustomCarousel() {
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90">
             {slides[currentIndex].subtitle}
           </p>
-        </div> */}
-
+        </div>  */}
         {/* Navigation Arrows - Hidden on mobile, visible on larger screens */}
         <div className="hidden md:block">
-          <button 
+          <button
             onClick={prevSlide}
             className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 z-30 p-1 sm:p-2 rounded-full bg-black/20 text-white cursor-pointer hover:bg-black/40 transition transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
           </button>
-          <button 
+          <button
             onClick={nextSlide}
             className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 z-30 p-1 sm:p-2 rounded-full bg-black/20 text-white cursor-pointer hover:bg-black/40 transition transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white"
             aria-label="Next slide"
@@ -136,8 +148,8 @@ export default function CustomCarousel() {
               onClick={() => goToSlide(slideIndex)}
               className={`
                 transition-all duration-300 rounded-full
-                ${currentIndex === slideIndex 
-                  ? 'w-4 sm:w-6 bg-white' 
+                ${currentIndex === slideIndex
+                  ? 'w-4 sm:w-6 bg-white'
                   : 'w-2 sm:w-3 bg-white/50 hover:bg-white/80'}
                 h-2 sm:h-3
               `}

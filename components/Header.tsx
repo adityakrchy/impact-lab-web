@@ -39,10 +39,10 @@ const Header = () => {
                 drop-shadow-sm
                 transform transition-transform duration-300 group-hover:scale-105`}
               >
-                IMPACT•LAB
+                IMPACT Lab
               </span>
-              <span className={`${montserrat.className} text-xs tracking-[0.2em] text-gray-500 font-medium`}>
-                EMPOWERING FUTURES
+              <span className={`${montserrat.className} text-xs tracking-[0.2em] text-black font-bold`}>
+              निशुलक कंप्यूटर प्रशिक्षण केंद्र
               </span>
             </div>
           </Link>
