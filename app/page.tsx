@@ -117,9 +117,9 @@ export default function Home() {
               className="grid grid-cols-2 gap-4"
             >
               {[
-                { number: "1000+", label: "Students Trained" },
-                { number: "95%", label: "Placement Rate" },
-                { number: "50+", label: "Corporate Partners" },
+                { number: "2000+", label: "Students Trained" },
+                // { number: "95%", label: "Placement Rate" },
+                // { number: "50+", label: "Corporate Partners" },
                 { number: "4.8/5", label: "Student Rating" }
               ].map((stat, index) => (
                 <div key={index} className="bg-blue-50 p-6 rounded-lg text-center">
@@ -158,7 +158,6 @@ export default function Home() {
               <ul className="space-y-3">
                 {[
                   "Free Training Programs",
-                  "Monthly Stipend",
                   "Placement Assistance",
                   "Industry Certification",
                   "Practical Training"
@@ -183,7 +182,6 @@ export default function Home() {
                   "Age: 15-33 years",
                   "Education: 10th pass or equivalent",
                   "Domicile: Resident of Bihar",
-                  "Category: All categories welcome"
                 ].map((criteria, index) => (
                   <li key={index} className="flex items-center">
                     <GraduationCap className="w-5 h-5 text-blue-500 mr-2" />
