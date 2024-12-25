@@ -6,46 +6,100 @@ import Section from '@/components/layout/Section'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useState } from 'react'
+import axios from 'axios'
+
+const contactInfo = [
+  {
+    icon: <MapPin className="w-12 h-12" />,
+    title: "Our Location",
+    description: "P.M. Tank, Bangalitola, Laheriasarai, Darbhanga, Bihar, 846001",
+    color: "from-blue-500 to-cyan-400"
+  },
+  {
+    icon: <Phone className="w-12 h-12" />,
+    title: "Phone Number",
+    description: "+91 9931467100",
+    color: "from-purple-500 to-pink-400"
+  },
+  {
+    icon: <Mail className="w-12 h-12" />,
+    title: "Email Address",
+    description: "info@impactlab.in",
+    color: "from-green-500 to-emerald-400"
+  },
+  {
+    icon: <MessageSquare className="w-12 h-12" />,
+    title: "Live Chat",
+    description: "Chat with our support team",
+    color: "from-orange-500 to-amber-400"
+  },
+  {
+    icon: <Clock className="w-12 h-12" />,
+    title: "Business Hours",
+    description: "Monday - Saturday: 9:00 AM - 6:00 PM",
+    color: "from-rose-500 to-pink-400"
+  },
+  {
+    icon: <Users className="w-12 h-12" />,
+    title: "Support Team",
+    description: "Dedicated support for all your queries",
+    color: "from-indigo-500 to-blue-400"
+  }
+]
+
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 const EnquiryPage = () => {
-  const contactInfo = [
-    {
-      icon: <MapPin className="w-12 h-12" />,
-      title: "Our Location",
-      description: "P.M. Tank, Bangalitola, Laheriasarai, Darbhanga, Bihar, 846001",
-      color: "from-blue-500 to-cyan-400"
-    },
-    {
-      icon: <Phone className="w-12 h-12" />,
-      title: "Phone Number",
-      description: "+91 9931467100",
-      color: "from-purple-500 to-pink-400"
-    },
-    {
-      icon: <Mail className="w-12 h-12" />,
-      title: "Email Address",
-      description: "info@impactlab.in",
-      color: "from-green-500 to-emerald-400"
-    },
-    {
-      icon: <MessageSquare className="w-12 h-12" />,
-      title: "Live Chat",
-      description: "Chat with our support team",
-      color: "from-orange-500 to-amber-400"
-    },
-    {
-      icon: <Clock className="w-12 h-12" />,
-      title: "Business Hours",
-      description: "Monday - Saturday: 9:00 AM - 6:00 PM",
-      color: "from-rose-500 to-pink-400"
-    },
-    {
-      icon: <Users className="w-12 h-12" />,
-      title: "Support Team",
-      description: "Dedicated support for all your queries",
-      color: "from-indigo-500 to-blue-400"
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitMessage, setSubmitMessage] = useState<string>("");
+
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
+
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post('/api/send', formData);
+
+      if (response.data?.success) {
+        setSubmitMessage(response.data?.message);
+        console.log(submitMessage)
+        // Reset form here if needed
+        console.log(response.data?.message);
+
+
+
+
+      } else {
+        setSubmitMessage('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      setSubmitMessage('An error occurred. Please try again later.');
+      console.log(error)
+    } finally {
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      setIsSubmitting(false);
     }
-  ]
+  };
 
   return (
     <PageWrapper>
@@ -90,34 +144,36 @@ const EnquiryPage = () => {
             className="bg-white rounded-xl p-8 shadow-lg"
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Send us a message</h2>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={onSubmit}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Name
                 </label>
-                <Input type="text" id="name" name="name" required />
+                <Input type="text" id="name" name="name" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email
                 </label>
-                <Input type="email" id="email" name="email" required />
+                <Input type="email" id="email" name="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
                   Subject
                 </label>
-                <Input type="text" id="subject" name="subject" required />
+                <Input type="text" id="subject" name="subject" required value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                   Message
                 </label>
-                <Textarea id="message" name="message" rows={4} required />
+                <Textarea id="message" name="message" rows={4} required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} />
               </div>
-              <Button 
+              <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+                disabled={isSubmitting}
+
               >
                 Send Message
               </Button>

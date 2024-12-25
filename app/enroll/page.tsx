@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { motion } from 'framer-motion'
-import { 
-  User, Mail, Phone, GraduationCap, Users, FileText, 
-  MapPin, Calendar, Book, Building, Home, 
+import {
+  User, Mail, Phone, GraduationCap, Users, FileText,
+  MapPin, Calendar, Book, Building, Home,
 } from 'lucide-react'
 import PageWrapper from '@/components/layout/PageWrapper'
 import Section from '@/components/layout/Section'
@@ -13,6 +13,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { UseFormRegister, FieldErrors } from 'react-hook-form'
+import axios from 'axios'
+import Error from 'next/error'
+
+
+
 
 type FormData = {
   // Personal Information
@@ -21,7 +26,7 @@ type FormData = {
   gender: string
   email: string
   phone: string
-  
+
   // Address Information
   addressLine1: string
   addressLine2: string
@@ -33,8 +38,8 @@ type FormData = {
   institute: string
   yearOfPassing: string
   percentage: string
-  
-  document: FileList
+
+  document: FileList | null;
   declaration: boolean
 }
 
@@ -59,13 +64,69 @@ export default function EnrollPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
+  const [messageType, setMessageType] = useState<'success' | 'error'>('success')
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log(data)
-    setSubmitMessage('Registration submitted successfully! Please check your email for further instructions.')
-    setIsSubmitting(false)
+  // const onSubmit = async (data: FormData) => {
+  //   setIsSubmitting(true)
+  //   await new Promise(resolve => setTimeout(resolve, 2000))
+  //   console.log(data)
+  //   setSubmitMessage('Registration submitted successfully! Please check your email for further instructions.')
+  //   setIsSubmitting(false)
+  // }
+
+  // Form submission handler
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      setIsSubmitting(true);
+      let response;
+
+      if (!data.document?.length) {
+        console.log("No file uploaded");
+        response = await axios.post('/api/enroll', data);
+      } else {
+        const formData = new FormData();
+        formData.append('file', data.document[0]);
+
+        const fileResponse = await axios.post('/api/file-handler', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        if (fileResponse.status !== 200) {
+          throw new Error(fileResponse.data?.error || 'File upload failed');
+        }
+
+
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { document, ...dataWithoutDocument } = data;
+        const newData = {
+          ...dataWithoutDocument,
+          documentUrl: fileResponse.data?.fileUrl
+        };
+
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        response = await axios.post('/api/enroll', newData);
+      }
+
+      setMessageType('success');
+      setSubmitMessage('Registration submitted successfully! Please check your email for further instructions.');
+    } catch (error) {
+      setMessageType('error');
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setSubmitMessage(error.response.data.message || 'An enrollment with this email already exists.');
+        } else {
+          setSubmitMessage(error.response?.data?.message || 'Something went wrong. Please try again.');
+        }
+      } else {
+        setSubmitMessage('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const sections: Record<string, FieldType[]> = {
@@ -250,7 +311,9 @@ export default function EnrollPage() {
                       <input
                         type="file"
                         accept=".pdf"
-                        {...register('document', { required: 'Document is required' })}
+                        {...register('document', {
+                          required: false
+                        })}
                         className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
@@ -306,9 +369,39 @@ export default function EnrollPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-4 bg-green-100 text-green-700 rounded-lg"
+                className={`mt-4 p-4 rounded-lg ${messageType === 'success'
+                  ? 'bg-green-50 text-green-700 border border-green-200'
+                  : 'bg-red-50 text-red-700 border border-red-200'
+                  }`}
               >
-                {submitMessage}
+                <div className="flex items-center">
+                  {messageType === 'success' ? (
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                  {submitMessage}
+                </div>
               </motion.div>
             )}
           </motion.div>
