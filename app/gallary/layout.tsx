@@ -1,3 +1,11 @@
+import { Metadata } from "next"
+
+export const metadata : Metadata = {
+    title: 'Gallery | Impact Lab',
+    description: 'Gallery @ Impact Lab',
+    keywords: 'impact,lab,gallery',
+}
+
 export default function GalleryLayout({
     children,
   }: {

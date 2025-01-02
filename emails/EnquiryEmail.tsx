@@ -14,6 +14,7 @@ import { Tailwind } from '@react-email/tailwind';
 interface EnquiryEmailProps {
   name: string;
   email: string;
+  phone: string;
   subject: string;
   message: string;
 }
@@ -21,9 +22,12 @@ interface EnquiryEmailProps {
 export default function EnquiryEmail({
   name,
   email,
+  phone,
   subject,
   message,
 }: EnquiryEmailProps) {
+  console.log('EnquiryEmail props:', { name, email, phone, subject, message });
+  
   return (
     <Html>
       <Head />
@@ -56,6 +60,9 @@ export default function EnquiryEmail({
                 </Text>
                 <Text className="text-gray-700 mb-4">
                   <span className="font-semibold">Email:</span> {email}
+                </Text>
+                <Text className="text-gray-700 mb-4">
+                  <span className="font-semibold">Phone:</span> {phone}
                 </Text>
                 <Text className="text-gray-700 mb-4">
                   <span className="font-semibold">Subject:</span> {subject}

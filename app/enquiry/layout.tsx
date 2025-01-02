@@ -1,3 +1,12 @@
+import { Metadata } from "next"
+
+
+export const metadata : Metadata = {
+    title: 'Enquiry | Impact Lab',
+    description: 'Enquiry @ Impact Lab',
+    keywords: 'impact,lab,enquiry',
+}
+
 export default function ContactLayout({
     children,
   }: {

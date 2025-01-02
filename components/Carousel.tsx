@@ -166,6 +166,7 @@
 
 
 
+import Image from 'next/image';
 import React from 'react'
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -174,19 +175,20 @@ const DemoCarousel = () => {
   return (
     <Carousel autoPlay={true} interval={3000} infiniteLoop={true} showThumbs={false} showStatus={false} >
       <div>
-        <img src="/assets/banner1.jpg" />
+        {/* <img src="/assets/banner1.jpg" /> */}
+        <Image src={'/assets/banner1.webp'} alt='banner1' />
       </div>
       <div>
-        <img src="/assets/banner2.jpg" />
+        <Image src={'/assets/banner2.webp'} alt='banner2' />
       </div>
       <div>
-        <img src="/assets/banner3.jpg" />
+        <Image src={'/assets/banner3.webp'} alt='banner3' />
       </div>
       <div>
-        <img src="/assets/banner4.jpg" />
+        <Image src={'/assets/banner4.webp'} alt='banner4' />
       </div>
       <div>
-        <img src="/assets/banner5.jpg" />
+        <Image src={'/assets/banner5.webp'} alt='banner5' />
       </div>
 
     </Carousel>

@@ -6,6 +6,7 @@ import Section from '@/components/layout/Section';
 import { commonStyles } from '@/lib/styles';
 import { fadeIn, staggerContainer } from '@/lib/animations';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function CoursesPage() {
   const courses = [
@@ -101,7 +102,7 @@ export default function CoursesPage() {
                 {/* Image Section */}
                 <div className="relative h-48 overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-br ${course.color} opacity-20`} />
-                  <img 
+                  <Image 
                     src={course.image} 
                     alt={course.name}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"

@@ -2,61 +2,101 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import EnquiryEmail from '@/emails/EnquiryEmail';
 import AcknowledgementEmail from '@/emails/AcknowledgementEmai.';
+import twilio from 'twilio'
+import prisma from '@/prisma/index';
+import { generateEnquiryId } from '@/lib/generateEnquiryId';
+
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// configure twilio client
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
 export async function POST(req: Request) {
   try {
-    const { name, email, subject, message } = await req.json();
+    console.log('Starting request processing');
+    const { name, email, phone, subject, message } = await req.json();
+    console.log('Request data:', { name, email, phone, subject, message });
 
+    try {
+      const enquiryId = await generateEnquiryId();
+      console.log('Generated enquiryId:', enquiryId);
 
-    // enquiry mail for Impact Lab.
-    const data = await resend.emails.send({
-      from: 'Impact Lab <into@impactlab.in>',
-      to: ['adityakrchy101@gmail.com'],
-      subject: `New Enquiry: ${subject}`,
-      react: EnquiryEmail({
-        name,
-        email,
-        subject,
-        message,
-      }),
-    });
+      // Create enquiry first
+      const enquiry = await prisma.enquiry.create({
+        data: {
+          enquiryId,
+          name,
+          email,
+          phone,
+          subject,
+          message
+        }
+      });
+      console.log('Created enquiry:', enquiry);
 
-    // acknowledgement email for user.
-    await resend.emails.send({
-      from: 'Impact Lab <into@impactlab.in>',
-      to: [`${email}`],
-      cc: ['info@impactlab.in'],
-      subject: `New Enquiry: ${subject}`,
-      react: AcknowledgementEmail({
-        name,
-        subject,
-      }),
-    })
+      // Send notification email to admin
+      await resend.emails.send({
+        from: 'Impact Lab <info@impactlab.in>',
+        to: ['adityakrchy101@gmail.com'],
+        subject: `${enquiryId} - New Enquiry: ${subject}`,
+        react: EnquiryEmail({
+          name,
+          email,
+          phone,
+          subject,
+          message,
+        }),
+      });
 
-    if (data.error) {
+      // Send acknowledgment email to user
+      await resend.emails.send({
+        from: 'Impact Lab <info@impactlab.in>', // Fixed typo in 'into'
+        to: [email],
+        cc: ['adityakrchy101@gmail.com'],
+        subject: `Thank you for your enquiry: ${subject}`,
+        react: AcknowledgementEmail({
+          name,
+          subject,
+        }),
+      });
+
+      // Send SMS if configured
+      if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
+        try {
+          await twilioClient.messages.create({
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: `+91${phone}`,
+            body: `Thank you for your enquiry, ${name}. Your enquiry id is ${enquiryId}. We'll get back to you shortly. - Impact Lab`
+          });
+        } catch (twilioError) {
+          console.error('Twilio error:', twilioError);
+          // Continue execution even if SMS fails
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Your message has been sent successfully!',
+        enquiryId
+      }, { status: 200 });
+
+    } catch (innerError) {
+      console.error('Inner error:', innerError);
       return NextResponse.json({
         success: false,
-        message: 'Failed to send message. Please try again.',
-      }, { status: 424 })
+        message: 'Failed to process your request. Please try again.',
+        error: innerError instanceof Error ? innerError.message : String(innerError)
+      }, { status: 500 });
     }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Your message has been sent successfully!',
-      data: data.data
-    }, { status: 200 })
 
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'An error occurred. Please try again later.',
-        error: error
-      }, {
-      status: 500
-    }
-    );
+    console.error('Outer error:', error);
+    return NextResponse.json({
+      success: false,
+      message: 'An error occurred. Please try again later.',
+      error: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
 } 

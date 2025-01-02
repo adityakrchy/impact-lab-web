@@ -51,6 +51,7 @@ const contactInfo = [
 interface FormData {
   name: string;
   email: string;
+  phone: string;
   subject: string;
   message: string;
 }
@@ -63,6 +64,7 @@ const EnquiryPage = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
   })
@@ -94,6 +96,7 @@ const EnquiryPage = () => {
       setFormData({
         name: "",
         email: "",
+        phone: "",
         subject: "",
         message: "",
       });
@@ -156,6 +159,12 @@ const EnquiryPage = () => {
                   Email
                 </label>
                 <Input type="email" id="email" name="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                  Mobile Number
+                </label>
+                <Input type="text" id="phone" name="phone" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
